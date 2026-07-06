@@ -1,0 +1,237 @@
+{
+  "entities": {
+    "Student": {
+      "title": "Student Progress and Profile",
+      "description": "Information about registered students, their learning progress, stats, and last active time.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The unique user ID from Firebase Auth." },
+        "name": { "type": "string", "description": "The display name of the student." },
+        "email": { "type": "string", "description": "The email address of the student." },
+        "level": { "type": "string", "description": "English proficiency level: Beginner, Intermediate, or Advanced." },
+        "progress": { "type": "integer", "description": "The overall progress percentage (0-100)." },
+        "completedLessons": { "type": "array", "description": "List of completed lesson IDs." },
+        "savedWords": { "type": "array", "description": "List of saved vocabulary words or IDs." },
+        "dailyStreak": { "type": "integer", "description": "The current daily learning streak." },
+        "lastActive": { "type": "string", "description": "ISO timestamp of the last active time." },
+        "points": { "type": "integer", "description": "Points earned from completing lessons and quizzes." }
+      },
+      "required": ["uid", "name", "email", "level"]
+    },
+    "Teacher": {
+      "title": "Teacher Profile",
+      "description": "Information about professors, registered via the code verify step.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The unique user ID from Firebase Auth or local custom login." },
+        "name": { "type": "string", "description": "The display name of the professor." },
+        "email": { "type": "string", "description": "The email of the professor." },
+        "photoUrl": { "type": "string", "description": "URL of the professor photo." },
+        "createdAt": { "type": "string", "description": "ISO timestamp when the teacher was added." }
+      },
+      "required": ["name", "email"]
+    },
+    "Lesson": {
+      "title": "Lesson Content",
+      "description": "English pathway lesson with title, description, markdown body, level, and quizzes.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "titleAr": { "type": "string" },
+        "category": { "type": "string", "description": "grammar, vocabulary, reading, writing, listening, speaking, or pronunciation" },
+        "level": { "type": "string", "description": "Beginner, Intermediate, Advanced" },
+        "content": { "type": "string", "description": "English markdown explanation" },
+        "contentAr": { "type": "string", "description": "Arabic markdown explanation" },
+        "quiz": { "type": "array", "description": "List of questions for the lesson" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "title", "category", "level", "content"]
+    },
+    "Vocabulary": {
+      "title": "Vocabulary Word",
+      "description": "Word or expression with translation, explanation, category, and example.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "word": { "type": "string" },
+        "translation": { "type": "string" },
+        "definition": { "type": "string" },
+        "definitionAr": { "type": "string" },
+        "example": { "type": "string" },
+        "category": { "type": "string", "description": "daily, academic, common, phrasal" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "word", "translation", "category"]
+    },
+    "LiveSession": {
+      "title": "Live Virtual Class",
+      "description": "Scheduled live video classes or streaming links managed by teachers.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "date": { "type": "string" },
+        "time": { "type": "string" },
+        "link": { "type": "string" },
+        "status": { "type": "string", "description": "upcoming, live, completed" },
+        "teacherName": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "title", "date", "time", "link", "status"]
+    },
+    "ChatMessage": {
+      "title": "Chat Message",
+      "description": "Messages sent between students and teachers/AI assistants.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string" },
+        "senderRole": { "type": "string", "description": "student, teacher, or ai" },
+        "text": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "senderId", "senderName", "senderRole", "text", "timestamp"]
+    },
+    "TrainingTopic": {
+      "title": "Training Topic",
+      "description": "Topics used in the Question Wheel educational game.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "level": { "type": "string" },
+        "language": { "type": "string" },
+        "order": { "type": "integer" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "level", "language", "order"]
+    },
+    "TrainingQuestion": {
+      "title": "Training Question",
+      "description": "Questions linked to training topics in the Question Wheel.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "topicId": { "type": "string" },
+        "questionText": { "type": "string" },
+        "answerOptions": { "type": "array" },
+        "correctAnswerIndex": { "type": "integer" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "topicId", "questionText", "answerOptions", "correctAnswerIndex"]
+    },
+    "TypingSentence": {
+      "title": "Typing Sentence",
+      "description": "Sentences for the Typing Speed Trainer game.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "sentence": { "type": "string" },
+        "level": { "type": "string" },
+        "language": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "sentence", "level", "language"]
+    },
+    "RecordedLesson": {
+      "title": "Recorded Lesson",
+      "description": "Recorded academic video sessions uploaded by teachers.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "topic": { "type": "string" },
+        "level": { "type": "string", "description": "A1, A2, B1, B2, C1, C2" },
+        "order": { "type": "integer" },
+        "videoUrl": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "title", "topic", "level", "order", "videoUrl"]
+    },
+    "StudentWeeklyTask": {
+      "title": "Student Weekly Task",
+      "description": "A personal study task created and managed by the student themselves.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "type": { "type": "string" },
+        "completed": { "type": "boolean" },
+        "day": { "type": "string" },
+        "order": { "type": "integer" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "studentId", "title", "completed", "day"]
+    },
+    "SkillLink": {
+      "title": "Skill Development Link",
+      "description": "A study reference or resource link for Skill Development (Listening, Reading, Writing, Speaking) categorized by level.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "skillType": { "type": "string", "description": "listening, reading, writing, speaking" },
+        "title": { "type": "string" },
+        "url": { "type": "string" },
+        "level": { "type": "string", "description": "A1, A2, B1, B2, C1, C2" },
+        "order": { "type": "integer" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "skillType", "title", "url", "level"]
+    }
+  },
+  "firestore": {
+    "/student_weekly_tasks/{taskId}": {
+      "schema": "StudentWeeklyTask",
+      "description": "Student-owned weekly tasks mapped by day and student ID."
+    },
+    "/students/{studentId}": {
+      "schema": "Student",
+      "description": "Student progress records synced via uid."
+    },
+    "/teachers/{teacherId}": {
+      "schema": "Teacher",
+      "description": "Teacher profiles."
+    },
+    "/lessons/{lessonId}": {
+      "schema": "Lesson",
+      "description": "Course lessons across levels and categories."
+    },
+    "/vocabulary/{wordId}": {
+      "schema": "Vocabulary",
+      "description": "Bilingual learning vocabulary words."
+    },
+    "/liveSessions/{sessionId}": {
+      "schema": "LiveSession",
+      "description": "Virtual meeting links for live pathway sessions."
+    },
+    "/chats/{chatId}/messages/{messageId}": {
+      "schema": "ChatMessage",
+      "description": "Live student chat messages with AI/teachers."
+    },
+    "/training_topics/{topicId}": {
+      "schema": "TrainingTopic",
+      "description": "Topics for the educational Question Wheel game."
+    },
+    "/training_questions/{questionId}": {
+      "schema": "TrainingQuestion",
+      "description": "Questions matching the Question Wheel topics."
+    },
+    "/typing_sentences/{sentenceId}": {
+      "schema": "TypingSentence",
+      "description": "Sentences for typing practice across levels."
+    },
+    "/recorded_lessons/{lessonId}": {
+      "schema": "RecordedLesson",
+      "description": "Recorded videos managed by teachers and watched by students."
+    },
+    "/teachers/{teacherId}/skill_links/{linkId}": {
+      "schema": "SkillLink",
+      "description": "Study resource links grouped by level and skill type (listening, reading, writing, speaking) for students' skill development."
+    }
+  }
+}

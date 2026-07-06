@@ -1,0 +1,8 @@
+{
+  "name": " Pathway",
+  "description": "منصة تعليمية متكاملة مخصصة لتعلم اللغة الإنجليزية لجميع المستويات مع دروس تفاعلية وبنك مفردات ونظام حواري ذكي مع الأستاذ.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

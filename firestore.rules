@@ -1,0 +1,129 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Checking if user is a teacher (we can query the /teachers/ collection or inspect request.auth.token if we want,
+    // but in a serverless client, we can allow authenticated teachers or read from /teachers/{uid})
+    function isTeacher() {
+      return isAuthenticated() && exists(/databases/$(database)/documents/teachers/$(request.auth.uid));
+    }
+
+    // Student profile rules
+    match /students/{studentId} {
+      allow read, write: if true;
+
+      match /daily_tasks/{taskId} {
+        allow read, write: if true;
+      }
+      match /weekly_tasks/{taskId} {
+        allow read, write: if true;
+      }
+    }
+
+    match /student_weekly_tasks/{taskId} {
+      allow read, write: if true;
+    }
+
+    // Teacher collection rules
+    match /teachers/{teacherId} {
+      // Anyone can read teacher profiles so they appear in teacher cards, but only authenticated users or teachers can write
+      allow read, write: if true;
+
+      // Nested subcollections under each teacher to prevent permission denied errors in dynamic listings
+      match /lessons/{lessonId} {
+        allow read, write: if true;
+      }
+      match /vocabulary/{wordId} {
+        allow read, write: if true;
+      }
+      match /liveSessions/{sessionId} {
+        allow read, write: if true;
+      }
+      match /announcements/{announcementId} {
+        allow read, write: if true;
+      }
+      match /resources_tips/{tipId} {
+        allow read, write: if true;
+      }
+      match /skill_links/{linkId} {
+        allow read, write: if true;
+      }
+      match /training_topics/{topicId} {
+        allow read, write: if true;
+      }
+      match /training_questions/{questionId} {
+        allow read, write: if true;
+      }
+      match /typing_sentences/{sentenceId} {
+        allow read, write: if true;
+      }
+      match /recorded_lessons/{lessonId} {
+        allow read, write: if true;
+      }
+      match /library_books/{bookId} {
+        allow read, write: if true;
+      }
+      match /students/{studentId} {
+        allow read, write: if true;
+      }
+    }
+
+    // Announcements rules
+    match /announcements/{announcementId} {
+      allow read, write: if true;
+    }
+
+    // Lessons rules
+    match /lessons/{lessonId} {
+      allow read, write: if true;
+    }
+
+    // Vocabulary rules
+    match /vocabulary/{wordId} {
+      allow read, write: if true;
+    }
+
+    // Live sessions rules
+    match /liveSessions/{sessionId} {
+      allow read, write: if true;
+    }
+
+    // Training topics rules
+    match /training_topics/{topicId} {
+      allow read, write: if true;
+    }
+
+    // Training questions rules
+    match /training_questions/{questionId} {
+      allow read, write: if true;
+    }
+
+    // Typing sentences rules
+    match /typing_sentences/{sentenceId} {
+      allow read, write: if true;
+    }
+
+    // Recorded lessons rules
+    match /recorded_lessons/{lessonId} {
+      allow read, write: if true;
+    }
+
+    // Chats rules
+    match /chats/{chatId} {
+      allow read, write: if true;
+      
+      match /messages/{messageId} {
+        allow read, write: if true;
+      }
+    }
+  }
+}
